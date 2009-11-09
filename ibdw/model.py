@@ -98,6 +98,10 @@ def make_model(lon,lat,covariate_values,pos,neg,cpus=1):
     This function is required by the generic MBG code.
     """
     
+    for col in lon,lat,pos,neg:
+        if np.any(np.isnan(col)):
+            raise ValueError, 'NaN found in the following rows of the datafile: \n%s'%(np.where(np.isnan(col))[0])
+    
     if np.any(pos+neg==0):
         where_zero = np.where(pos+neg==0)[0]
         raise ValueError, 'Pos+neg = 0 in the rows (starting from zero):\n %s'%where_zero
